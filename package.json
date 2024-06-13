@@ -5,11 +5,10 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "tests"
+    "ts-component-tests"
   ],
   "scripts": {
-    "start:tests": "yarn workspace tests dev",
-    "test:integration": "yarn workspace tests test",
+    "start:app:ts": "yarn workspace ts-component-tests dev",
     "test:unit": "vitest --environment=jsdom",
     "build": "tsc"
   },

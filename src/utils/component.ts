@@ -1,17 +1,9 @@
-import { CSSResult, LitElement } from "lit";
+import { CSSResult } from "lit";
 import { toDashedString } from "./utils";
 import { FunctionalLitComponent, Hooks } from "./hooks";
 import BaseElement from "./base-element";
+import { Props, generateProps } from "./props";
 
-
-export type Props = {
-  useProp: Hooks['useProp'];
-  onMount: Hooks['onMount'];
-  onUnMount: Hooks['onUnMount'];
-  updated: Hooks['updated'];
-  attributeChangedCallback: Hooks['attributeChangedCallback'];
-  meta: LitElement,
-}
 
 export default function component(fn: Function, styles: CSSResult[] = []) {
   const componentName = toDashedString(fn.name);
@@ -21,14 +13,7 @@ export default function component(fn: Function, styles: CSSResult[] = []) {
   }
 
   const hooks: Hooks = new Hooks();
-  const props: Props = { 
-    useProp: hooks.useProp.bind(hooks),
-    onUnMount: hooks.onUnMount.bind(hooks),
-    onMount: hooks.onMount.bind(hooks),
-    updated: hooks.updated.bind(hooks),
-    attributeChangedCallback: hooks.attributeChangedCallback.bind(hooks),
-    meta: hooks.litElement as LitElement
-  }
+  const props: Props = generateProps(hooks);
 
   class ComponentClass extends BaseElement {
     constructor() {

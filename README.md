@@ -11,12 +11,16 @@ import component, { Props } from "../../src";
 
 const style = css``
 
-function myElement({useProps, onMount}: Props) {
+function myElement({useProps, onMount, updated}: Props) {
   const [count, setCount] = useProps('count', {type: Number}, 0);
   const [docs, _] = useProps('docs', {type: String}, 'This is some test docs');
   
   onMount(() => {
     console.log('connectedCallback');
+  });
+
+  updated((changedProperties: PropertyValues) => {
+    console.log('updated props', changedProperties);
   });
 
   return html`

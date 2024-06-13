@@ -11,10 +11,14 @@ import component, { Props } from "../../src";
 
 const style = css``
 
-function myElement({useProps}: Props) {
+function myElement({useProps, onMount}: Props) {
   const [count, setCount] = useProps('count', {type: Number}, 0);
   const [docs, _] = useProps('docs', {type: String}, 'This is some test docs');
   
+  onMount(() => {
+    console.log('connectedCallback');
+  });
+
   return html`
     <div>
       <a href="https://vitejs.dev" target="_blank">

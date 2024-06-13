@@ -47,7 +47,8 @@ export class Hooks {
 
     if (this.litElement.isConnected && !this.litElement.mounted) {
       this.litElement.mounted = true;
-      fn();
+      // wait the first render to be finished
+      setTimeout(() => fn())
     }
   }
 

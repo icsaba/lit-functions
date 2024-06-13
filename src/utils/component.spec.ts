@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest';
-import { elementUpdated, fixture, html } from '@open-wc/testing';
+import { elementUpdated, fixture, html, waitUntil } from '@open-wc/testing';
 import component, { Props } from '../';
 
 describe('component', () => {
@@ -55,27 +55,49 @@ describe('component', () => {
 
   describe('lifecycle', () => {
     function MyTestComponent3({useProp, onMount}: Props) {
-      const [refreshCounter, refresh] = useProp('counter', {type: Number}, 0);
+      const [counter, setCounter] = useProp('counter', {type: Number}, 0);
+      const [refreshCounter, refresh] = useProp('refreshCounter', {type: Number}, 0);
       
       onMount(() => {
         refresh(refreshCounter + 1);
       });
 
       return html`<div>
-        <span class="counter">${refreshCounter}</span>
+        <span class="counter">${counter}</span>
+        <span class="refreshCounter">${refreshCounter}</span>
+        <button @click=${() => setCounter(counter + 1)}>${counter}</button>
       </div>
       `;
     }
 
     component(MyTestComponent3);
 
-    it('should run the mount method only once', async () => {
+    it('should run the mount method initially', async () => {
       const element = await fixture(html`<my-test-component3></my-test-component3>`);
 
+      await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
+      const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
+
+      expect(refreshCounter?.textContent).toBe('1');
+    });
+
+    it('should run the mount method only once', async () => {
+      const element = await fixture(html`<my-test-component3></my-test-component3>`);
+      const btn = element.shadowRoot?.querySelector('button');
+
+      btn?.click();
+      await elementUpdated(element);
+      btn?.click();
+      await elementUpdated(element);
+      btn?.click();
       await elementUpdated(element);
 
+      await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
+
       const counter = element.shadowRoot?.querySelector('.counter');
-      expect(counter?.textContent).toBe('1');
+      const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
+      expect(counter?.textContent).toBe('3');
+      expect(refreshCounter?.textContent).toBe('1');
     });
   });
 });

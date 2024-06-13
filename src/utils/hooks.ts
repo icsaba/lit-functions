@@ -59,4 +59,12 @@ export class Hooks {
 
     this.litElement.onUnMount = fn.bind(this.litElement);
   }
+
+  updated(fn: LitElement['updated']) {
+    this.litElement?.setUpdatedHook(fn);
+  }
+
+  attributeChangedCallback(fn: LitElement['attributeChangedCallback']) {
+    this.litElement?.setAttrChangedHook(fn);
+  }
 }

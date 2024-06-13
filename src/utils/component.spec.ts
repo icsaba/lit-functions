@@ -1,6 +1,7 @@
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, vi } from 'vitest';
 import { elementUpdated, fixture, html, waitUntil } from '@open-wc/testing';
 import component, { Props } from '../';
+import { PropertyValues } from 'lit';
 
 describe('component', () => {
   describe('rendering', () => {
@@ -54,13 +55,19 @@ describe('component', () => {
   });
 
   describe('lifecycle', () => {
-    function MyTestComponent3({useProp, onMount}: Props) {
+    const updatedMock = vi.fn();
+
+    function MyTestComponent3({useProp, onMount, updated}: Props) {
       const [counter, setCounter] = useProp('counter', {type: Number}, 0);
       const [refreshCounter, refresh] = useProp('refreshCounter', {type: Number}, 0);
       
       onMount(() => {
         refresh(refreshCounter + 1);
       });
+
+      updated((props: PropertyValues) => {
+        updatedMock(props);
+      })
 
       return html`<div>
         <span class="counter">${counter}</span>
@@ -72,32 +79,46 @@ describe('component', () => {
 
     component(MyTestComponent3);
 
-    it('should run the mount method initially', async () => {
-      const element = await fixture(html`<my-test-component3></my-test-component3>`);
-
-      await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
-      const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
-
-      expect(refreshCounter?.textContent).toBe('1');
+    describe('mount', () => {
+      it('should run the mount method initially', async () => {
+        const element = await fixture(html`<my-test-component3></my-test-component3>`);
+  
+        await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
+        const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
+  
+        expect(refreshCounter?.textContent).toBe('1');
+      });
+  
+      it('should run the mount method only once', async () => {
+        const element = await fixture(html`<my-test-component3></my-test-component3>`);
+        const btn = element.shadowRoot?.querySelector('button');
+  
+        btn?.click();
+        await elementUpdated(element);
+        btn?.click();
+        await elementUpdated(element);
+        btn?.click();
+        await elementUpdated(element);
+  
+        await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
+  
+        const counter = element.shadowRoot?.querySelector('.counter');
+        const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
+        expect(counter?.textContent).toBe('3');
+        expect(refreshCounter?.textContent).toBe('1');
+      });
     });
 
-    it('should run the mount method only once', async () => {
-      const element = await fixture(html`<my-test-component3></my-test-component3>`);
-      const btn = element.shadowRoot?.querySelector('button');
+    describe('updated', () => {
+      it('should be called on prop change', async () => {
+        const expectedMap = new Map();
+        expectedMap.set('counter', undefined);
+        expectedMap.set('refreshCounter', undefined);
 
-      btn?.click();
-      await elementUpdated(element);
-      btn?.click();
-      await elementUpdated(element);
-      btn?.click();
-      await elementUpdated(element);
-
-      await waitUntil(() => element.shadowRoot?.querySelector('.refreshCounter')?.textContent === '1')
-
-      const counter = element.shadowRoot?.querySelector('.counter');
-      const refreshCounter = element.shadowRoot?.querySelector('.refreshCounter');
-      expect(counter?.textContent).toBe('3');
-      expect(refreshCounter?.textContent).toBe('1');
+        await fixture(html`<my-test-component3></my-test-component3>`);
+        expect(updatedMock).toHaveBeenCalledWith(expectedMap);
+      })
     });
+
   });
 });

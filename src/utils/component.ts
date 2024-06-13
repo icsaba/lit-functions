@@ -1,13 +1,16 @@
-import { CSSResult, LitElement } from "lit";
+import { CSSResult } from "lit";
 import { toDashedString } from "./utils";
 import { FunctionalLitComponent, Hooks } from "./hooks";
+import BaseElement from "./base-element";
 
 
 export type Props = {
-  useProps: Hooks['useProps']
+  useProp: Hooks['useProp'],
+  onMount: Hooks['onMount'],
+  onUnMount: Hooks['onUnMount'],
 } 
 
-export default function component(fn: Function, styles: CSSResult[]) {
+export default function component(fn: Function, styles: CSSResult[] = []) {
   const componentName = toDashedString(fn.name);
 
   if (customElements.get(componentName)) {
@@ -15,9 +18,13 @@ export default function component(fn: Function, styles: CSSResult[]) {
   }
 
   const hooks: Hooks = new Hooks();
-  const props: Props = { useProps: hooks.useProps.bind(hooks) }
+  const props: Props = { 
+    useProp: hooks.useProp.bind(hooks),
+    onUnMount: hooks.onUnMount.bind(hooks),
+    onMount: hooks.onMount.bind(hooks),
+  }
 
-  class ComponentClass extends LitElement {
+  class ComponentClass extends BaseElement {
     constructor() {
       super();
 

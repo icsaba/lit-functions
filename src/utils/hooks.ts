@@ -1,6 +1,7 @@
 import { LitElement, PropertyDeclaration } from "lit";
+import BaseElement from "./base-element";
 
-export type FunctionalLitComponent = LitElement & { [key: string]: unknown };
+export type FunctionalLitComponent = BaseElement & { [key: string]: unknown };
 
 export class Hooks {
   LitClass: typeof LitElement | null;
@@ -11,13 +12,13 @@ export class Hooks {
     this.litElement = null;
   }
 
-  useProps(propertyName: string, descriptor: PropertyDeclaration, defaultValue: any = undefined): [any, (value: any) => void] {
+  useProp(propertyName: string, descriptor: PropertyDeclaration, defaultValue: any = undefined): [any, (value: any) => void] {
     if (!this.LitClass) {
       throw new Error('LitClass is not set previously');
     }
 
-    if(!this.litElement) {
-        throw new Error('lit instance is not set previously');
+    if (!this.litElement) {
+      throw new Error('lit instance is not set previously');
     }
 
     if (!(this.LitClass.elementProperties.has(propertyName))) {
@@ -39,7 +40,22 @@ export class Hooks {
     return [this.litElement[propertyName], propertyValueSetter];
   }
 
-  useStyle() {
+  onMount(fn: () => void) {
+    if (!this.litElement) {
+      throw new Error('cannot find litelement');
+    }
 
+    if (this.litElement.isConnected && !this.litElement.mounted) {
+      this.litElement.mounted = true;
+      fn();
+    }
+  }
+
+  onUnMount(fn: () => void) {
+    if (!this.litElement) {
+      throw new Error('cannot find litelement');
+    }
+
+    this.litElement.onUnMount = fn.bind(this.litElement);
   }
 }

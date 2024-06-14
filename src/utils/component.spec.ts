@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest';
-import { elementUpdated, fixture, html, waitUntil } from '@open-wc/testing';
+import { elementUpdated, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import component, { Props } from '../';
 import { PropertyValues } from 'lit';
 
@@ -57,7 +57,7 @@ describe('component', () => {
   describe('lifecycle', () => {
     const updatedMock = vi.fn();
 
-    function MyTestComponent3({useProp, onMount, updated}: Props) {
+    function MyTestComponent3({useProp, onMount, updated, dispatchEvent}: Props) {
       const [counter, setCounter] = useProp('counter', {type: Number}, 0);
       const [refreshCounter, refresh] = useProp('refreshCounter', {type: Number}, 0);
       
@@ -73,6 +73,7 @@ describe('component', () => {
         <span class="counter">${counter}</span>
         <span class="refreshCounter">${refreshCounter}</span>
         <button @click=${() => setCounter(counter + 1)}>${counter}</button>
+        <button class="event-dispatcher" @click=${() => dispatchEvent(new CustomEvent('foo-bar', { detail: { prop1: true } }))}>click</button>
       </div>
       `;
     }
@@ -117,6 +118,19 @@ describe('component', () => {
 
         await fixture(html`<my-test-component3></my-test-component3>`);
         expect(updatedMock).toHaveBeenCalledWith(expectedMap);
+      })
+    });
+
+    describe('dispatchEvent', () => {
+      it('should dispatch event on the component', async () => {
+        const element = await fixture(html`<my-test-component3></my-test-component3>`);
+        const btn = element.shadowRoot?.querySelector('button.event-dispatcher') as HTMLButtonElement;
+
+        const eventPromise = oneEvent(element, 'foo-bar');
+        btn.click();
+        const event = await eventPromise;
+        
+        expect(event.detail.prop1).toBeTruthy();
       })
     });
 

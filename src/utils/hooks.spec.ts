@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { FunctionalLitComponent, Hooks } from './hooks';
 import { LitElement } from 'lit';
 
@@ -7,7 +7,9 @@ describe('hooks', () => {
 
   beforeEach(() => {
     hooks = new Hooks();
-    hooks.litElement = {} as FunctionalLitComponent;
+    hooks.litElement = {
+      dispatchEvent: vi.fn(),
+    } as unknown as FunctionalLitComponent;
     hooks.LitClass = {
       elementProperties: new Map(),
       createProperty: () => {},
@@ -30,6 +32,15 @@ describe('hooks', () => {
       setter(5);
 
       expect(hooks.litElement?.propertyName).toBe(5);
+    });
+  });
+
+  describe('dispatchEvent', () => {
+    it('should dispatch new event', () => {
+      const event = new CustomEvent('foo');
+      hooks.dispatchEvent(event);
+
+      expect(hooks.litElement?.dispatchEvent).toHaveBeenCalledWith(event);
     });
   });
 });

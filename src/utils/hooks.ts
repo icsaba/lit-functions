@@ -67,4 +67,8 @@ export class Hooks {
   attributeChangedCallback(fn: LitElement['attributeChangedCallback']) {
     this.litElement?.setAttrChangedHook(fn);
   }
+
+  dispatchEvent<T>(event: CustomEvent<T>) {
+    this.litElement?.dispatchEvent(event);
+  }
 }

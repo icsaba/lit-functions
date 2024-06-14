@@ -11,7 +11,7 @@ import component, { Props } from "../../src";
 
 const style = css``
 
-function myElement({useProps, onMount, updated}: Props) {
+function myElement({useProps, onMount, updated, dispatchEvent}: Props) {
   const [count, setCount] = useProps('count', {type: Number}, 0);
   const [docs, _] = useProps('docs', {type: String}, 'This is some test docs');
   
@@ -22,6 +22,10 @@ function myElement({useProps, onMount, updated}: Props) {
   updated((changedProperties: PropertyValues) => {
     console.log('updated props', changedProperties);
   });
+
+  function dispatchMyCustomEvent() {
+    dispatchEvent(new CustomEvent('foo-event', { detail: { foo: 'foo' }}));
+  }
 
   return html`
     <div>

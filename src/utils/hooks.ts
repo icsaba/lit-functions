@@ -29,7 +29,7 @@ export class Hooks {
       this.litElement[propertyName] = defaultValue;
     }
 
-    const propertyValueSetter = (value: any) => {
+    const propertyValueSetter = (value: Type) => {
       if (!this.litElement) {
         return;
       }
@@ -40,7 +40,7 @@ export class Hooks {
     return [this.litElement[propertyName] as Type, propertyValueSetter];
   }
 
-  onMount(fn: () => void) {
+  onMount(fn: LitElement['connectedCallback']) {
     if (!this.litElement) {
       throw new Error('cannot find litelement');
     }
@@ -52,7 +52,7 @@ export class Hooks {
     }
   }
 
-  onUnMount(fn: () => void) {
+  onUnMount(fn: LitElement['disconnectedCallback']) {
     if (!this.litElement) {
       throw new Error('cannot find litelement');
     }

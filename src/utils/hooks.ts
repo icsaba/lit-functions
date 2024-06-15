@@ -12,7 +12,7 @@ export class Hooks {
     this.litElement = null;
   }
 
-  useProp(propertyName: string, descriptor: PropertyDeclaration, defaultValue: any = undefined): [any, (value: any) => void] {
+  useProp<Type, TypeHint>(propertyName: string, descriptor: PropertyDeclaration<Type, TypeHint>, defaultValue: Type): [Type, (value: Type) => void] {
     if (!this.LitClass) {
       throw new Error('LitClass is not set previously');
     }
@@ -22,7 +22,7 @@ export class Hooks {
     }
 
     if (!(this.LitClass.elementProperties.has(propertyName))) {
-      this.LitClass.createProperty(propertyName, descriptor);
+      this.LitClass.createProperty(propertyName, descriptor as PropertyDeclaration);
     }
 
     if (defaultValue !== undefined && this.litElement[propertyName] === undefined) {
@@ -37,7 +37,7 @@ export class Hooks {
       this.litElement[propertyName] = value;
     }
 
-    return [this.litElement[propertyName], propertyValueSetter];
+    return [this.litElement[propertyName] as Type, propertyValueSetter];
   }
 
   onMount(fn: () => void) {

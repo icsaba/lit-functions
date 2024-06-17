@@ -1,7 +1,21 @@
 # Lit Functional components
-Aims to provide a cool wrapper around lit-components.
+Aims to provide a cool wrapper around lit-components. That's not a goal to introduce every React like syntax and feature.
 
-TBD later;
+## Install
+
+### Yarn
+`yarn add lit-functions`
+
+### Npm
+`npm install lit-functions`
+
+## Usage
+
+### Component and props
+`useProp` is like `useState` in React, but in Lit there are props and attributes only and there is no point to have a `useState` here. Instead let's define `lit` properties and whenever a property changes the component rerenders. 
+The intellisense will figure out the type of the props from the `type`. 
+
+The `component` method will create the custom web component and the name is generated from the function name.
 
 ```ts
 import { html, css } from "lit";
@@ -11,21 +25,9 @@ import component, { Props } from "../../src";
 
 const style = css``
 
-function myElement({useProps, onMount, updated, dispatchEvent}: Props) {
-  const [count, setCount] = useProps('count', {type: Number}, 0);
-  const [docs, _] = useProps('docs', {type: String}, 'This is some test docs');
-  
-  onMount(() => {
-    console.log('connectedCallback');
-  });
-
-  updated((changedProperties: PropertyValues) => {
-    console.log('updated props', changedProperties);
-  });
-
-  function dispatchMyCustomEvent() {
-    dispatchEvent(new CustomEvent('foo-event', { detail: { foo: 'foo' }}));
-  }
+function myElement({ useProp }: Props) {
+  const [count, setCount] = useProp('count', {type: Number}, 0);
+  const [docs, _] = useProp('docs', {type: String}, 'This is some test docs');
 
   return html`
     <div>
@@ -49,3 +51,78 @@ function myElement({useProps, onMount, updated, dispatchEvent}: Props) {
 component(myElement, [style]);
 
 ```
+
+### Lifecycle
+
+#### onMount and onUnMount
+This is the `connectedCallback` and `disconnectedCallback`, these are high order functions.
+
+```ts
+function myElement({onMount, onUnMount}: Props) {
+  onMount(() => {
+    console.log('connectedCallback');
+  });
+
+  onUnMount(() => {
+    console.log('disconnectedCallback');
+  });
+}
+```
+
+#### updated and attributeChangedCallback
+I did not changed the method names.
+
+```ts
+function myElement({updated, attributeChangedCallback}: Props) {
+  updated((changedProperties: PropertyValues) => {
+    console.log('updated props', changedProperties);
+  });
+}
+```
+
+#### meta
+If you need anything else from Lit, you have the `meta` property that exposes the created lit instance.
+
+```ts
+function myElement({meta}: { meta: LitElement }) {}
+```
+
+### Handling events
+
+```ts
+import { html, css } from "lit";
+import litLogo from './assets/lit.svg'
+import viteLogo from '/vite.svg'
+import component, { Props } from "../../src";
+
+const style = css``
+
+function myElement({dispatchEvent}: Props) {
+  function dispatchMyCustomEvent() {
+    dispatchEvent(new CustomEvent('foo-event', { detail: { foo: 'foo' }}));
+  }
+
+  return html`
+    <button part="button" @click="${() => dispatchMyCustomEvent()}">
+      dispatch an event
+    </button>
+  `
+}
+
+component(myElement, [style]);
+
+```
+
+## Contributing
+
+Add some test and document what you've done. That's it :D
+
+### Start
+
+You can try out ur changes with the command `yarn start:app:ts`
+
+### Test
+
+It uses `vitest` and `jsdom` for now.
+
+`yarn test:unit`

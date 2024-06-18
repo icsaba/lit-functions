@@ -5,7 +5,7 @@ import BaseElement from "./base-element";
 import { Props, generateProps } from "./props";
 
 
-export default function component(fn: Function, styles: CSSResult[] = []) {
+export default function component(fn: Function, styles: CSSResult[] = []): void {
   const componentName = toDashedString(fn.name);
 
   if (customElements.get(componentName)) {
@@ -34,6 +34,4 @@ export default function component(fn: Function, styles: CSSResult[] = []) {
   hooks.LitClass = ComponentClass;
 
   customElements.define(componentName, ComponentClass);
-
-  return ComponentClass;
 }

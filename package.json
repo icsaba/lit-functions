@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "ts-component-tests"
+    "ts-component-tests",
+    "js-component-tests"
   ],
   "homepage": "https://github.com/icsaba/lit-functions",
   "repository": "https://github.com/icsaba/lit-functions.git",
@@ -17,6 +18,7 @@
   ],
   "scripts": {
     "start:app:ts": "yarn workspace ts-component-tests dev",
+    "start:app:js": "yarn workspace js-component-tests dev",
     "test:unit": "vitest --environment=jsdom",
     "build": "tsc"
   },

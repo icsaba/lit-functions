@@ -118,6 +118,12 @@ component(myElement, [style]);
 
 Add some test and document what you've done. That's it :D
 
+### Install
+
+Add `"private": true` to the package.json to support `yarn workspaces`.
+
+`yarn install`
+
 ### Start
 
 You can try out ur changes with the command `yarn start:app:ts` or you can test how it works with js either `yarn start:app:js`. Before runninf the JS app, do not forget to create a new version locally with `yarn build && yarn pack` command.

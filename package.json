@@ -1,11 +1,19 @@
 {
   "name": "lit-functions",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Functional components for lit-elements.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "private": true,
   "workspaces": [
     "ts-component-tests"
+  ],
+  "homepage": "https://github.com/icsaba/lit-functions",
+  "repository": "https://github.com/icsaba/lit-functions.git",
+  "files": [
+    "dist"
   ],
   "scripts": {
     "start:app:ts": "yarn workspace ts-component-tests dev",
@@ -20,5 +28,12 @@
     "jsdom": "^24.1.0",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
-  }
+  },
+  "keywords": [
+    "webcomponents",
+    "lit-element",
+    "lit-hooks",
+    "lit-functions",
+    "lit function components"
+  ]
 }

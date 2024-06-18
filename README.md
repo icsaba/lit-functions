@@ -70,7 +70,7 @@ function myElement({onMount, onUnMount}: Props) {
 ```
 
 #### updated and attributeChangedCallback
-I did not changed the method names.
+I did not change the method names.
 
 ```ts
 function myElement({updated, attributeChangedCallback}: Props) {
@@ -88,6 +88,7 @@ function myElement({meta}: { meta: LitElement }) {}
 ```
 
 ### Handling events
+You can manage events with the `dispatchEvent` from the props. It dispatches an event on the current `lit-element`. 
 
 ```ts
 import { html, css } from "lit";

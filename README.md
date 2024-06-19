@@ -1,7 +1,7 @@
 # Lit Functional components
-Aims to provide a cool wrapper around lit-components. That's not a goal to introduce every React like syntax and feature.
+Lit Functional Components aims to provide a simple wrapper around Lit components, offering a streamlined development experience without introducing every React-like syntax and feature.
 
-## Install
+## Installation
 
 ### Yarn
 `yarn add lit-functions`
@@ -12,10 +12,9 @@ Aims to provide a cool wrapper around lit-components. That's not a goal to intro
 ## Usage
 
 ### Component and props
-`useProp` is like `useState` in React, but in Lit there are props and attributes only and there is no point to have a `useState` here. Instead let's define `lit` properties and whenever a property changes the component rerenders. 
-The intellisense will figure out the type of the props from the `type`. 
+The useProp function is similar to useState in React. In Lit, properties and attributes are used, eliminating the need for a separate useState. Instead, define Lit properties, and whenever a property changes, the component re-renders. The type of the properties is inferred from the type argument.
 
-The `component` method will create the custom web component and the name is generated from the function name.
+The component function creates a custom web component, with the name generated from the function name.
 
 ```ts
 import { html, css } from "lit";
@@ -52,10 +51,10 @@ component(myElement, [style]);
 
 ```
 
-### Lifecycle
+### Lifecycle Methods
 
 #### onMount and onUnMount
-This is the `connectedCallback` and `disconnectedCallback`, these are high order functions.
+These functions correspond to connectedCallback and disconnectedCallback, respectively, and are high-order functions.
 
 ```ts
 function myElement({onMount, onUnMount}: Props) {
@@ -70,7 +69,7 @@ function myElement({onMount, onUnMount}: Props) {
 ```
 
 #### updated and attributeChangedCallback
-I did not change the method names.
+The method names remain the same for clarity.
 
 ```ts
 function myElement({updated, attributeChangedCallback}: Props) {
@@ -81,14 +80,14 @@ function myElement({updated, attributeChangedCallback}: Props) {
 ```
 
 #### meta
-If you need anything else from Lit, you have the `meta` property that exposes the created lit instance.
+If you need direct access to the Lit instance, use the `meta` property.
 
 ```ts
 function myElement({meta}: { meta: LitElement }) {}
 ```
 
-### Handling events
-You can manage events with the `dispatchEvent` from the props. It dispatches an event on the current `lit-element`. 
+### Handling Events
+Manage events with `dispatchEvent` from the `props`, which dispatches an event on the current Lit element.
 
 ```ts
 import { html, css } from "lit";
@@ -115,8 +114,7 @@ component(myElement, [style]);
 ```
 
 ## Contributing
-
-Add some test and document what you've done. That's it :D
+To contribute, add tests and document your changes. That's it! 😄
 
 ### Install
 
@@ -126,10 +124,20 @@ Add `"private": true` to the package.json to support `yarn workspaces`.
 
 ### Start
 
-You can try out ur changes with the command `yarn start:app:ts` or you can test how it works with js either `yarn start:app:js`. Before runninf the JS app, do not forget to create a new version locally with `yarn build && yarn pack` command.
+Test your changes with the command:
+
+`yarn start:app:ts`
+
+Or test how it works with JavaScript:
+
+`yarn start:app:js`
+
+Before running the JavaScript app, create a new version locally with:
+
+`yarn build && yarn pack`
 
 ### Test
 
-It uses `vitest` and `jsdom` for now.
+We use vitest and jsdom for testing.
 
 `yarn test:unit`

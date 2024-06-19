@@ -6,15 +6,13 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "private": true,
   "workspaces": [
     "ts-component-tests",
     "js-component-tests"
   ],
   "homepage": "https://github.com/icsaba/lit-functions",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/icsaba/lit-functions.git"
-  },
+  "repository": "https://github.com/icsaba/lit-functions.git",
   "files": [
     "dist"
   ],

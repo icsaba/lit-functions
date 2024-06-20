@@ -114,30 +114,5 @@ component(myElement, [style]);
 ```
 
 ## Contributing
-To contribute, add tests and document your changes. That's it! 😄
 
-### Install
-
-Add `"private": true` to the package.json to support `yarn workspaces`.
-
-`yarn install`
-
-### Start
-
-Test your changes with the command:
-
-`yarn start:app:ts`
-
-Or test how it works with JavaScript:
-
-`yarn start:app:js`
-
-Before running the JavaScript app, create a new version locally with:
-
-`yarn build && yarn pack`
-
-### Test
-
-We use vitest and jsdom for testing.
-
-`yarn test:unit`
+Please see `CONTRIBUTING.md` for the contribution guidelines

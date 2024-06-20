@@ -4,6 +4,7 @@ on:
       - main
   pull_request:
     types: [ assigned, opened, synchronize, reopened, labeled ]
+
 name: ci
 permissions:
   contents: read # to fetch code (actions/checkout)

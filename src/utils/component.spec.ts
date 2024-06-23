@@ -1,4 +1,4 @@
-import { expect, describe, it, vi } from 'vitest';
+import { expect, describe, it, vi, afterEach } from 'vitest';
 import { elementUpdated, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import component, { Props } from '../';
 import { PropertyValues } from 'lit';
@@ -23,8 +23,12 @@ describe('component', () => {
   });
 
   describe('properties', () => {
-    function MyTestComponent2({useProp}: Props) {
+    const usePropChangedCallback = vi.fn();
+
+    function MyTestComponent2({useProp, usePropChanged}: Props) {
       const [counter, setCounter] = useProp('counter', {type: Number}, 12);
+
+      usePropChanged(usePropChangedCallback, ['counter']);
 
       return html`<div>
         <span class="counter">${counter}</span>
@@ -33,24 +37,42 @@ describe('component', () => {
       `;
     }
 
-    component(MyTestComponent2);
-
-    it('should define counter property with a default value', async () => {
-      const element = await fixture(html`<my-test-component2></my-test-component2>`);
-
-      const counter = element.shadowRoot?.querySelector('.counter');
-      expect(counter?.textContent).toBe('12');
+    afterEach(() => {
+      usePropChangedCallback.mockReset();
     });
 
-    it('should increase the value of the counter property using the setter', async () => {
-      const element = await fixture(html`<my-test-component2></my-test-component2>`);
-      const btn = element.shadowRoot?.querySelector('button');
+    component(MyTestComponent2);
 
-      btn?.click();
-      await elementUpdated(element);
+    describe('useProp', () => {
+      it('should define counter property with a default value', async () => {
+        const element = await fixture(html`<my-test-component2></my-test-component2>`);
+  
+        const counter = element.shadowRoot?.querySelector('.counter');
+        expect(counter?.textContent).toBe('12');
+      });
+  
+      it('should increase the value of the counter property using the setter', async () => {
+        const element = await fixture(html`<my-test-component2></my-test-component2>`);
+        const btn = element.shadowRoot?.querySelector('button');
+  
+        btn?.click();
+        await elementUpdated(element);
+  
+        const counter = element.shadowRoot?.querySelector('.counter');
+        expect(counter?.textContent).toBe('13');
+      });
+    });
 
-      const counter = element.shadowRoot?.querySelector('.counter');
-      expect(counter?.textContent).toBe('13');
+    describe('usePropChanged', () => {
+      it('should trigger a callback on "counter" change', async () => {
+        const element = await fixture(html`<my-test-component2></my-test-component2>`);
+        const btn = element.shadowRoot?.querySelector('button');
+  
+        btn?.click();
+        await elementUpdated(element);
+
+        expect(usePropChangedCallback).toHaveBeenCalledOnce();
+      });
     });
   });
 

@@ -1,7 +1,7 @@
 import { html, css, PropertyValues } from "lit";
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
-import component, { Props } from "lit-functions";
+import component, { Props } from "../../src";
 
 const style = css`
 :host {
@@ -75,7 +75,7 @@ button:focus-visible {
 }
 `
 
-function myElement({useProp, onMount, updated}: Props) {
+function myElement({useProp, onMount, updated, usePropChanged}: Props) {
   const [count, setCount] = useProp('count', {type: Number}, 0);
   const [refreshCounter, refresh] = useProp('refreshCounter', {type: Number}, 2);
   const [docs, _] = useProp('docs', {type: String}, 'This is some test docs');
@@ -88,6 +88,10 @@ function myElement({useProp, onMount, updated}: Props) {
   updated((changedProperties: PropertyValues) => {
     console.log('changed', changedProperties);
   });
+
+  usePropChanged(() => {
+    console.log('counter changed', count)
+  }, ['count']);
   
   return html`
     <div>

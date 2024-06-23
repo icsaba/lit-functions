@@ -71,4 +71,8 @@ export class Hooks {
   dispatchEvent<T>(event: CustomEvent<T>) {
     this.litElement?.dispatchEvent(event);
   }
+
+  usePropChanged(callback: Function, dependencies: string[]) {
+    this.litElement?.usePropChanged(callback, dependencies);
+  }
 }

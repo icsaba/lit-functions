@@ -8,6 +8,7 @@ export type Props = {
   updated: Hooks['updated'];
   attributeChangedCallback: Hooks['attributeChangedCallback'];
   dispatchEvent: Hooks['dispatchEvent'],
+  usePropChanged: Hooks['usePropChanged'],
   meta: LitElement,
 }
 
@@ -19,6 +20,7 @@ export function generateProps(hooks: Hooks) {
     updated: hooks.updated.bind(hooks),
     attributeChangedCallback: hooks.attributeChangedCallback.bind(hooks),
     dispatchEvent: hooks.dispatchEvent.bind(hooks),
+    usePropChanged: hooks.usePropChanged.bind(hooks),
     meta: hooks.litElement as LitElement
   }
 }

@@ -12,7 +12,9 @@ Lit Functional Components aims to provide a simple wrapper around Lit components
 ## Usage
 
 ### Component and props
-The useProp function is similar to useState in React. In Lit, properties and attributes are used, eliminating the need for a separate useState. Instead, define Lit properties, and whenever a property changes, the component re-renders. The type of the properties is inferred from the type argument.
+The `useProp` function is similar to `useState` in React. In Lit, properties and attributes are used, eliminating the need for a separate `useState`. Instead, define Lit properties, and whenever a property changes, the component re-renders. The type of the properties is inferred from the type argument.
+
+If you would like to react on property change, you can either use `updated` or `usePropChanged` hook. It's very similar to `useEffect`, you should provide a callback and the list of dependencies in string format.
 
 The component function creates a custom web component, with the name generated from the function name.
 
@@ -24,9 +26,11 @@ import component, { Props } from "../../src";
 
 const style = css``
 
-function myElement({ useProp }: Props) {
+function myElement({ useProp, usePropChanged }: Props) {
   const [count, setCount] = useProp('count', {type: Number}, 0);
   const [docs, _] = useProp('docs', {type: String}, 'This is some test docs');
+
+  usePropChanged(() => { console.log('count value changed')}, ['count']);
 
   return html`
     <div>

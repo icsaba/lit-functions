@@ -24,4 +24,4 @@ jobs:
       - run: npm install -g npm@8
       - run: node --version
       - run: yarn
-      - run: yarn test:unit
+      - run: yarn test

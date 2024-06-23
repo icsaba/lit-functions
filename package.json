@@ -2,9 +2,6 @@
   "name": "lit-functions-repo",
   "version": "1.0.0",
   "description": "Functional components for lit-elements.",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -15,17 +12,9 @@
   "scripts": {
     "start:app:ts": "yarn workspace ts-component-tests dev",
     "start:app:js": "yarn workspace js-component-tests dev",
-    "test:unit": "yarn workspace lit-functions vitest --environment=jsdom",
+    "test:unit": "yarn workspace lit-functions test:unit",
+    "test": "yarn workspace lit-functions test",
     "build": "yarn workspace lit-functions build"
-  },
-  "dependencies": {
-    "lit": "^3.1.4"
-  },
-  "devDependencies": {
-    "@open-wc/testing": "^4.0.0",
-    "jsdom": "^24.1.0",
-    "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
   },
   "keywords": [
     "webcomponents",

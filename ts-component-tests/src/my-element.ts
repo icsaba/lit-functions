@@ -1,7 +1,7 @@
 import { html, css, PropertyValues } from "lit";
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
-import component, { Props } from "../../src";
+import component, { Props } from "../../lit-functions/src";
 
 const style = css`
 :host {

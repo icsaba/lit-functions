@@ -14,8 +14,6 @@ pre-commit install --hook-type commit-msg
 
 ### Install
 
-Add `"private": true` to the package.json to support `yarn workspaces`.
-
 `yarn install`
 
 ### Start

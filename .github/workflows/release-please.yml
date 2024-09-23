@@ -1,31 +1,76 @@
+name: Release and Publish
+
 on:
   push:
     branches:
-      - main
-name: release-please
-permissions: { }
-jobs:
-  release-please:
-    permissions:
-      contents: write # to create release commit (google-github-actions/release-please-action)
-      pull-requests: write # to create release PR (google-github-actions/release-please-action)
+      - main  # Trigger on push to the main branch
 
+jobs:
+  release:
+    name: Automated Release with NPM Publish
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      
     steps:
-      - uses: google-github-actions/release-please-action@v4
-        id: release
+      # Step 1: Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        if: ${{ steps.release.outputs.release_created }}
+          node-version: '22'  # Specify Node.js version
+          cache: 'yarn'       # Use Yarn and cache dependencies
+
+      # Step 3: Install dependencies with Yarn
+      - name: Install dependencies
+        run: yarn install
+
+      # Step 4: Run tests (optional)
+      - name: Run tests
+        run: yarn test
+
+      # Step 5: Build the project (optional)
+      - name: Build project
+        run: yarn build
+
+      # Step 6: Use Release Please to automatically create a release
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v4
         with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-      - run: yarn
-        if: ${{ steps.release.outputs.release_created }}
-      - run: yarn workspace lit-functions publish
-        if: ${{ steps.release.outputs.release_created }}
+          release-type: node  # Can be node, npm, or based on your project type
+          package-name: lit-functions
+          token: ${{ secrets.GITHUB_TOKEN }}  # Provided by GitHub automatically
+
+  publish:
+    name: Publish to npm
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  # Specify Node.js version
+          cache: 'yarn'       # Use Yarn and cache dependencies
+
+      # Step 3: Install dependencies with Yarn
+      - name: Install dependencies
+        run: yarn install
+
+      # Step 4: Publish to npm
+      - name: Publish to npm
+        run: yarn publish --non-interactive --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+

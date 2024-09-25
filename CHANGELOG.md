@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/icsaba/lit-functions/compare/v1.0.1...v1.0.2) (2024-09-25)
+
+
+### Bug Fixes
+
+* removed npm registry from workflow ([b7121ab](https://github.com/icsaba/lit-functions/commit/b7121abc40454bbdd5101c086803422aed8f349e))
+
 ## [1.0.1](https://github.com/icsaba/lit-functions/compare/v1.0.0...v1.0.1) (2024-09-25)
 
 

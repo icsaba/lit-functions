@@ -63,7 +63,6 @@ jobs:
         with:
           node-version: '22'  # Specify Node.js version
           cache: 'yarn'       # Use Yarn and cache dependencies
-          registry-url: 'https://registry.npmjs.org'
           always-auth: true
 
       # Step 3: Install dependencies with Yarn

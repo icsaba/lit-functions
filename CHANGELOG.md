@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/icsaba/lit-functions/compare/v1.0.0...v1.0.1) (2024-09-25)
+
+
+### Bug Fixes
+
+* using npm auth token ([5b742c4](https://github.com/icsaba/lit-functions/commit/5b742c478c49ab6852c16ef8c65cadea5e6e2191))
+
 ## 1.0.0 (2024-09-23)
 
 

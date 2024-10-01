@@ -69,6 +69,9 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Build library 
+        run: yarn build
+
       # Step 4: Publish to npm
       - name: Publish to npm
         run: yarn publish --non-interactive --access public

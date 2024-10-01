@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/icsaba/lit-functions/compare/v1.0.2...v1.0.3) (2024-10-01)
+
+
+### Bug Fixes
+
+* **ts-example:** fixed import in the example file ([55044f0](https://github.com/icsaba/lit-functions/commit/55044f083b7c4620ebdc50ed0f8a31afe1b89dea))
+
 ## [1.0.2](https://github.com/icsaba/lit-functions/compare/v1.0.1...v1.0.2) (2024-09-25)
 
 
